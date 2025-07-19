@@ -221,7 +221,7 @@
       <span>i</span>
       <span>p</span>
     </div>
-    <button class="enter-btn" id="enterBtn">ENTER</button>
+    <button class="enter-btn" id="enterBtn">>ENTER<</button>
   </div>
 
   <!-- Main Content -->
@@ -245,16 +245,30 @@
       </a>
     </div>
 
-    <!-- Musik Player -->
+    <!-- WÄHLE EINE DER BEIDEN MUSIKOPTIONEN: -->
+    
+    <!-- OPTION 1: SoundCloud Player (unsichtbar) -->
+    <iframe id="soundcloudPlayer" 
+            src="https://w.soundcloud.com/player/?url=https%3A//soundcloud.com/reynes_xlvii/dnd&auto_play=false&hide_related=true&show_comments=false"
+            width="0" 
+            height="0" 
+            frameborder="no" 
+            scrolling="no">
+    </iframe>
+
+    <!-- OPTION 2: MP3 Player (falls du eine MP3-Datei hast) -->
+    <!--
+    <audio id="backgroundMusic" loop>
+      <source src="DEIN_MP3_LINK" type="audio/mpeg">
+    </audio>
+    -->
+
+    <!-- Musik-Steuerung Button -->
     <div class="music-player" id="musicToggle">
-      <i class="fab fa-soundcloud"></i>
+      <i class="fab fa-soundcloud"></i> <!-- Für SoundCloud -->
+      <!-- <i class="fas fa-music"></i> --> <!-- Für MP3 -->
     </div>
   </div>
-
-  <!-- Audio Element (Fallback) -->
-  <audio id="backgroundMusic" loop>
-    <source src="https://soundcloud.com/reynes_xlvii/dnd?si=55ab058ed69c4b3e8a06a9224a2c615b&utm_source=clipboard&utm_medium=text&utm_campaign=social_sharing" type="audio/mpeg">
-  </audio>
 
   <script>
     // 1. Dark/Light Mode
@@ -269,18 +283,15 @@
     const mainContent = document.getElementById('mainContent');
 
     letters.forEach((letter, index) => {
-      // Buchstaben erscheinen lassen
       setTimeout(() => {
         letter.style.animation = `letterAppear 0.5s forwards`;
         
-        // Buchstaben verschwinden lassen
         setTimeout(() => {
           letter.style.animation = `letterDisappear 0.5s forwards`;
         }, 3000 + index * 100);
       }, index * 150);
     });
 
-    // ENTER Button anzeigen
     setTimeout(() => {
       enterBtn.style.opacity = '1';
     }, 4000);
@@ -291,62 +302,61 @@
       setTimeout(() => {
         introScreen.style.display = 'none';
         mainContent.style.display = 'flex';
-        startMusic(); // Musik starten
       }, 1000);
     });
 
-    // 4. Musik Funktionen
+    // 4. MUSIK-STEUERUNG (Wähle eine Option)
+
+    // OPTION 1: SoundCloud Integration
     const musicToggle = document.getElementById('musicToggle');
     let musicPlaying = false;
-    const audio = document.getElementById('backgroundMusic');
 
-    function startMusic() {
-      audio.volume = 0.3;
-      audio.play()
-        .then(() => {
-          musicPlaying = true;
-          musicToggle.innerHTML = '<i class="fas fa-pause"></i>';
-        })
-        .catch(error => {
-          console.log("Musik konnte nicht automatisch starten:", error);
-        });
-    }
+    // Lade SoundCloud API
+    const scScript = document.createElement('script');
+    scScript.src = 'https://w.soundcloud.com/player/api.js';
+    scScript.onload = function() {
+      const widget = SC.Widget(document.getElementById('soundcloudPlayer'));
+      
+      // Starte Musik nach ENTER-Klick
+      enterBtn.addEventListener('click', () => {
+        widget.play();
+        musicPlaying = true;
+        musicToggle.innerHTML = '<i class="fas fa-pause"></i>';
+      });
+
+      // Play/Pause bei Klick
+      musicToggle.addEventListener('click', () => {
+        widget.toggle();
+        musicPlaying = !musicPlaying;
+        musicToggle.innerHTML = musicPlaying 
+          ? '<i class="fas fa-pause"></i>' 
+          : '<i class="fab fa-soundcloud"></i>';
+      });
+    };
+    document.body.appendChild(scScript);
+
+    /*
+    // OPTION 2: MP3 Integration (wenn du die MP3-Option oben aktivierst)
+    const audio = document.getElementById('backgroundMusic');
+    audio.volume = 0.3;
+    
+    enterBtn.addEventListener('click', () => {
+      audio.play();
+      musicPlaying = true;
+      musicToggle.innerHTML = '<i class="fas fa-pause"></i>';
+    });
 
     musicToggle.addEventListener('click', () => {
       if (musicPlaying) {
         audio.pause();
-        musicToggle.innerHTML = '<i class="fab fa-soundcloud"></i>';
+        musicToggle.innerHTML = '<i class="fas fa-music"></i>';
       } else {
         audio.play();
         musicToggle.innerHTML = '<i class="fas fa-pause"></i>';
       }
       musicPlaying = !musicPlaying;
     });
-
-    // 5. SoundCloud Fallback
-    function loadSoundCloud() {
-      const iframe = document.createElement('iframe');
-      iframe.id = 'soundcloudPlayer';
-      iframe.src = 'https://w.soundcloud.com/player/?url=https%3A%2F%2Fsoundcloud.com%2Freynes_xlvii%2Fdnd&auto_play=true&hide_related=true';
-      iframe.width = '0';
-      iframe.height = '0';
-      iframe.frameborder = 'no';
-      iframe.scrolling = 'no';
-      document.body.appendChild(iframe);
-
-      const script = document.createElement('script');
-      script.src = 'https://w.soundcloud.com/player/api.js';
-      script.onload = () => {
-        const widget = SC.Widget(iframe);
-        widget.bind(SC.Widget.Events.READY, () => {
-          widget.setVolume(50);
-        });
-      };
-      document.body.appendChild(script);
-    }
-
-    // Starte SoundCloud nach 3 Sekunden
-    setTimeout(loadSoundCloud, 3000);
+    */
   </script>
 </body>
 </html>
