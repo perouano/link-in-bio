@@ -83,11 +83,7 @@
       color: var(--text-color);
       text-decoration: none;
       font-size: 1.1em;
-      overflow: hidden;
-      opacity: 0;
-      transform: translateX(100%);
-      animation: slideIn 0.6s forwards;
-      animation-timing-function: ease-out;
+      transform: translateX(0);
       transition: transform 0.3s ease;
     }
 
@@ -98,20 +94,7 @@
     }
 
     .link:hover {
-      transform: scale(1.08) rotate(1deg);
-    }
-
-    .link:nth-child(1) { animation-delay: 0.2s; }
-    .link:nth-child(2) { animation-delay: 0.4s; }
-    .link:nth-child(3) { animation-delay: 0.6s; }
-    .link:nth-child(4) { animation-delay: 0.8s; }
-
-    /* Animations */
-    @keyframes slideIn {
-      to {
-        opacity: 1;
-        transform: translateX(0);
-      }
+      transform: scale(1.05);
     }
 
     @keyframes pulse {
@@ -125,7 +108,7 @@
   <!-- Dark/Light Switch -->
   <button class="toggle-mode" onclick="toggleMode()">🌙 / ☀️</button>
 
-  <!-- Profilbild (füge diese Bilddatei mit gleichem Namen ins Repo ein) -->
+  <!-- Profilbild -->
   <img src="White eyes Icon.jpg" alt="Profilbild" class="profile-img" />
 
   <h1>👋 Hey, ich bin Dein Name</h1>
