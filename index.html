@@ -266,21 +266,21 @@
     
     <div class="profile-container">
       <img src="https://i.ibb.co/PzG8y783/kitty.jpg" alt="Profilbild" class="profile-img" />
-      <h1>👋 Hey, ich bin Atanas</h1>
+      <h1>👋 Hey, hier sind all meine links :3</h1>
     </div>
 
     <div class="links">
-      <a class="link" href="https://instagram.com/" target="_blank">
+      <a class="link" href="https://instagram.com/atanas.vip" target="_blank">
         <i class="fab fa-instagram"></i> Instagram
       </a>
-      <a class="link" href="https://youtube.com/" target="_blank">
+      <a class="link" href="https://youtube.com/PIKO_Z" target="_blank">
         <i class="fab fa-youtube"></i> YouTube
       </a>
-      <a class="link" href="https://tiktok.com/" target="_blank">
+      <a class="link" href="https://tiktok.com/atanas.vip" target="_blank">
         <i class="fab fa-tiktok"></i> TikTok
       </a>
-      <a class="link" href="mailto:deinname@example.com">
-        <i class="fas fa-envelope"></i> E-Mail
+      <a class="link" href="https://discord.gg/KVMw6ybDub" target="_blank">
+        <i class="fab fa-discord"></i> Discord
       </a>
     </div>
 
@@ -290,7 +290,7 @@
         <i class="fas fa-step-backward"></i>
       </button>
       <button class="music-btn" id="playBtn">
-        <i class="fas fa-play"></i>
+        <i class="fas fa-pause"></i>
       </button>
       <button class="music-btn" id="nextBtn">
         <i class="fas fa-step-forward"></i>
@@ -302,7 +302,7 @@
     </div>
 
     <!-- Audio Element -->
-    <audio id="backgroundMusic">
+    <audio id="backgroundMusic" loop>
       <source src="https://www.dropbox.com/scl/fi/gvdeaoe5a5i5x4c4aih09/CJx-Heartkiller-Lyrics-x-AMV-mp3cut.net.mp3?rlkey=ir9gw2ql2ijn51o2kc49zx1ew&dl=1" type="audio/mpeg">
     </audio>
   </div>
@@ -339,6 +339,18 @@
       setTimeout(() => {
         introScreen.style.display = 'none';
         mainContent.style.display = 'flex';
+        
+        // MUSIK AUTOMATISCH STARTEN
+        audio.play()
+          .then(() => {
+            isPlaying = true;
+            playBtn.innerHTML = '<i class="fas fa-pause"></i>';
+          })
+          .catch(error => {
+            console.log("Autoplay blockiert:", error);
+            // Fallback: Play-Button anzeigen
+            playBtn.style.display = 'flex';
+          });
       }, 1000);
     });
 
@@ -350,7 +362,7 @@
     let isPlaying = false;
     let isMuted = false;
 
-    // Lautstärke initial einstellen
+    // Initiale Lautstärke
     audio.volume = 0.7;
 
     // Play/Pause
@@ -389,16 +401,14 @@
       }
     });
 
-    // Automatisch Play wenn Musik zuende (Loop)
+    // Automatischer Neustart (Loop)
     audio.addEventListener('ended', () => {
       audio.currentTime = 0;
       audio.play();
     });
 
-    // Für Mobile: Erst nach Klick Musik laden
-    enterBtn.addEventListener('click', () => {
-      audio.load(); // Lädt die Musik vor
-    });
+    // Vorbereitung der Musik
+    audio.load();
   </script>
 </body>
 </html>
