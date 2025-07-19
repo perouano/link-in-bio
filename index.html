@@ -3,17 +3,25 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Meine Links</title>
+  <title>@atanas.vip</title>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
   <style>
     :root {
-      --text-color: #fff;
-      --card-bg: rgba(26, 26, 26, 0.8);
+      --text-color: #ffffff;
+      --card-bg: rgba(0, 0, 0, 0.7);
+      --neon-glow: 0 0 10px rgba(255, 255, 255, 0.8),
+                   0 0 20px rgba(255, 255, 255, 0.6),
+                   0 0 30px rgba(255, 255, 255, 0.4);
+      --neon-border: 1px solid rgba(255, 255, 255, 0.3);
     }
 
     body.light {
-      --text-color: #000;
-      --card-bg: rgba(255, 255, 255, 0.8);
+      --text-color: #000000;
+      --card-bg: rgba(255, 255, 255, 0.7);
+      --neon-glow: 0 0 10px rgba(0, 0, 0, 0.8),
+                   0 0 20px rgba(0, 0, 0, 0.6),
+                   0 0 30px rgba(0, 0, 0, 0.4);
+      --neon-border: 1px solid rgba(0, 0, 0, 0.3);
     }
 
     body {
@@ -23,41 +31,72 @@
       display: flex;
       flex-direction: column;
       align-items: center;
+      justify-content: center;
       min-height: 100vh;
-      padding: 2em;
-      transition: color 0.4s ease;
-      background: url('https://i.imgur.com/2ZEjenD.gif') no-repeat center center fixed;
-      background-size: cover;
+      background-color: #000000;
       position: relative;
+      overflow: hidden;
     }
 
-    body::before {
-      content: '';
-      position: absolute;
+    /* Intro Screen */
+    .intro-screen {
+      position: fixed;
       top: 0;
       left: 0;
-      right: 0;
-      bottom: 0;
-      background-color: rgba(0, 0, 0, 0.5);
-      z-index: -1;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background-color: #000;
+      z-index: 1000;
     }
 
+    .username {
+      font-size: 3rem;
+      font-weight: bold;
+      margin-bottom: 2rem;
+      display: flex;
+    }
+
+    .username span {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+
+    .enter-btn {
+      padding: 15px 40px;
+      background: transparent;
+      color: var(--text-color);
+      border: var(--neon-border);
+      border-radius: 30px;
+      font-size: 1.2rem;
+      cursor: pointer;
+      box-shadow: var(--neon-glow);
+      transition: all 0.3s ease;
+      opacity: 0;
+    }
+
+    .enter-btn:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 20px rgba(255, 255, 255, 0.9);
+    }
+
+    /* Rest des CSS bleibt gleich */
     .toggle-mode {
       position: absolute;
       top: 1em;
       right: 1em;
       background: var(--card-bg);
       color: var(--text-color);
-      border: none;
+      border: var(--neon-border);
       padding: 0.6em 1em;
       border-radius: 20px;
       cursor: pointer;
-      transition: background 0.3s ease;
+      transition: all 0.3s ease;
+      box-shadow: var(--neon-glow);
       z-index: 1;
-    }
-
-    .toggle-mode:hover {
-      background: rgba(255, 255, 255, 0.3);
     }
 
     .profile-img {
@@ -65,16 +104,25 @@
       height: 150px;
       border-radius: 50%;
       object-fit: cover;
-      border: 4px solid var(--text-color);
+      border: 2px solid var(--text-color);
       margin-top: 1em;
       animation: pulse 3s infinite;
+      box-shadow: var(--neon-glow);
       z-index: 1;
+    }
+
+    .content {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
     }
 
     h1 {
       margin: 1em 0 0.5em;
       font-size: 2em;
       text-align: center;
+      text-shadow: var(--neon-glow);
       z-index: 1;
     }
 
@@ -100,7 +148,8 @@
       font-size: 1.1em;
       transform: translateX(0);
       transition: all 0.3s ease;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      box-shadow: var(--neon-glow);
+      border: var(--neon-border);
       backdrop-filter: blur(5px);
     }
 
@@ -108,22 +157,21 @@
       margin-right: 0.8em;
       font-size: 1.3em;
       min-width: 24px;
+      text-shadow: var(--neon-glow);
     }
 
     .link:hover {
       transform: scale(1.08);
-      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
-      background-color: rgba(255, 255, 255, 0.2);
+      box-shadow: 0 0 20px rgba(255, 255, 255, 0.9);
     }
 
-    /* SoundCloud Player Styles */
     .music-player {
       position: fixed;
       bottom: 20px;
       right: 20px;
       z-index: 100;
       color: var(--text-color);
-      background: #ff8800; /* SoundCloud Orange */
+      background: #ff8800;
       width: 50px;
       height: 50px;
       border-radius: 50%;
@@ -131,7 +179,8 @@
       align-items: center;
       justify-content: center;
       cursor: pointer;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+      box-shadow: 0 0 10px #ff8800,
+                  0 0 20px #ff8800;
       transition: transform 0.3s ease;
     }
 
@@ -143,45 +192,76 @@
       0%, 100% { transform: scale(1); }
       50% { transform: scale(1.05); }
     }
+
+    @keyframes letterAppear {
+      0% { opacity: 0; transform: translateY(20px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes letterDisappear {
+      0% { opacity: 1; transform: translateY(0); }
+      100% { opacity: 0; transform: translateY(-20px); }
+    }
   </style>
 </head>
 <body class="dark">
 
-  <!-- Dark/Light Switch -->
-  <button class="toggle-mode" onclick="toggleMode()">🌙 / ☀️</button>
-
-  <!-- Profilbild -->
-  <img src="https://i.ibb.co/6J05S35/0bb07bbcce0f1556.jpg" alt="Profilbild" class="profile-img" />
-
-  <h1>👋 Hey, ich bin Dein Name</h1>
-
-  <div class="links">
-    <a class="link" href="https://instagram.com/" target="_blank">
-      <i class="fab fa-instagram"></i> Instagram
-    </a>
-    <a class="link" href="https://youtube.com/" target="_blank">
-      <i class="fab fa-youtube"></i> YouTube
-    </a>
-    <a class="link" href="https://tiktok.com/" target="_blank">
-      <i class="fab fa-tiktok"></i> TikTok
-    </a>
-    <a class="link" href="mailto:deinname@example.com">
-      <i class="fas fa-envelope"></i> E-Mail
-    </a>
+  <!-- Intro Screen -->
+  <div class="intro-screen" id="introScreen">
+    <div class="username" id="username">
+      <span>@</span>
+      <span>a</span>
+      <span>t</span>
+      <span>a</span>
+      <span>n</span>
+      <span>a</span>
+      <span>s</span>
+      <span>.</span>
+      <span>v</span>
+      <span>i</span>
+      <span>p</span>
+    </div>
+    <button class="enter-btn" id="enterBtn">ENTER</button>
   </div>
 
-  <!-- SoundCloud Player (unsichtbar) -->
-  <iframe id="soundcloudPlayer" 
-          src="https://soundcloud.com/reynes_xlvii/dnd?si=24f2461b696c40018e04155e90569d7b&utm_source=clipboard&utm_medium=text&utm_campaign=social_sharing&auto_play=true&hide_related=true&show_comments=false&show_user=false&show_reposts=false&visual=false"
-          width="0" 
-          height="0" 
-          frameborder="no" 
-          scrolling="no">
-  </iframe>
+  <!-- Main Content (hidden initially) -->
+  <div class="content" id="mainContent">
+    <!-- Dark/Light Switch -->
+    <button class="toggle-mode" onclick="toggleMode()">🌙 / ☀️</button>
 
-  <!-- Musik-Steuerung Button -->
-  <div class="music-player" id="musicToggle">
-    <i class="fab fa-soundcloud"></i>
+    <!-- Profilbild -->
+    <img src="https://i.ibb.co/PzG8y783/kitty.jpg" alt="Profilbild" class="profile-img" />
+
+    <h1>👋 Hey, ich bin Atanas</h1>
+
+    <div class="links">
+      <a class="link" href="https://instagram.com/" target="_blank">
+        <i class="fab fa-instagram"></i> Instagram
+      </a>
+      <a class="link" href="https://youtube.com/" target="_blank">
+        <i class="fab fa-youtube"></i> YouTube
+      </a>
+      <a class="link" href="https://tiktok.com/" target="_blank">
+        <i class="fab fa-tiktok"></i> TikTok
+      </a>
+      <a class="link" href="mailto:deinname@example.com">
+        <i class="fas fa-envelope"></i> E-Mail
+      </a>
+    </div>
+
+    <!-- SoundCloud Player -->
+    <iframe id="soundcloudPlayer" 
+            src="https://w.soundcloud.com/player/?url=https://soundcloud.com/reynes_xlvii/dnd&auto_play=true&hide_related=true&show_comments=false&show_user=false&show_reposts=false&visual=false"
+            width="0" 
+            height="0" 
+            frameborder="no" 
+            scrolling="no">
+    </iframe>
+
+    <!-- Musik-Steuerung Button -->
+    <div class="music-player" id="musicToggle">
+      <i class="fab fa-soundcloud"></i>
+    </div>
   </div>
 
   <script>
@@ -190,9 +270,50 @@
       document.body.classList.toggle("light");
     }
 
+    // Username Animation
+    const username = document.getElementById('username');
+    const letters = username.querySelectorAll('span');
+    const enterBtn = document.getElementById('enterBtn');
+    const introScreen = document.getElementById('introScreen');
+    const mainContent = document.getElementById('mainContent');
+
+    // Animiere Buchstaben nacheinander
+    function animateLetters() {
+      letters.forEach((letter, index) => {
+        setTimeout(() => {
+          letter.style.animation = `letterAppear 0.5s forwards`;
+          
+          // Lasse Buchstaben nach 3 Sekunden wieder verschwinden
+          setTimeout(() => {
+            letter.style.animation = `letterDisappear 0.5s forwards ${index * 0.1}s`;
+          }, 3000 + index * 100);
+        }, index * 150);
+      });
+
+      // Zeige ENTER Button nach der Animation
+      setTimeout(() => {
+        enterBtn.style.opacity = '1';
+        enterBtn.style.transition = 'opacity 1s ease';
+      }, 4000);
+    }
+
+    // Starte Animation beim Laden
+    animateLetters();
+
+    // ENTER Button Funktion
+    enterBtn.addEventListener('click', () => {
+      introScreen.style.opacity = '0';
+      introScreen.style.transition = 'opacity 1s ease';
+      
+      setTimeout(() => {
+        introScreen.style.display = 'none';
+        mainContent.style.display = 'flex';
+      }, 1000);
+    });
+
     // SoundCloud Integration
     const musicToggle = document.getElementById('musicToggle');
-    let musicPlaying = true;
+    let musicPlaying = false;
 
     // Lade SoundCloud Widget API
     (function() {
@@ -202,12 +323,16 @@
       document.body.appendChild(scScript);
     })();
 
-    // Warte bis API geladen ist
-    let widget;
+    // Initialisiere Player
     function initPlayer() {
-      widget = SC.Widget(document.getElementById('soundcloudPlayer'));
+      const widget = SC.Widget(document.getElementById('soundcloudPlayer'));
       
-      // Play/Pause bei Klick
+      widget.bind(SC.Widget.Events.READY, function() {
+        widget.play();
+        musicPlaying = true;
+        musicToggle.innerHTML = '<i class="fas fa-pause"></i>';
+      });
+
       musicToggle.addEventListener('click', function() {
         widget.toggle();
         musicPlaying = !musicPlaying;
@@ -215,7 +340,7 @@
       });
     }
 
-    // Initialisiere wenn API bereit
+    // Warte auf SoundCloud API
     if (window.SC) {
       initPlayer();
     } else {
