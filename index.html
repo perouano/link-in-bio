@@ -175,7 +175,7 @@
       width: 50px;
       height: 50px;
       border-radius: 50%;
-      display: flex;
+      display: none; /* Erst nach ENTER-Klick anzeigen */
       align-items: center;
       justify-content: center;
       cursor: pointer;
@@ -221,7 +221,7 @@
       <span>i</span>
       <span>p</span>
     </div>
-    <button class="enter-btn" id="enterBtn">>ENTER<</button>
+    <button class="enter-btn" id="enterBtn">ENTER</button>
   </div>
 
   <!-- Main Content -->
@@ -231,42 +231,33 @@
     <h1>👋 Hey, ich bin Atanas</h1>
 
     <div class="links">
-      <a class="link" href="https://instagram.com/" target="_blank">
+      <a class="link" href="https://www.instagram.com/atanas.vip/" target="_blank">
         <i class="fab fa-instagram"></i> Instagram
       </a>
-      <a class="link" href="https://youtube.com/" target="_blank">
+      <a class="link" href="https://www.youtube.com/@PIKO_Z" target="_blank">
         <i class="fab fa-youtube"></i> YouTube
       </a>
-      <a class="link" href="https://tiktok.com/" target="_blank">
+      <a class="link" href="https://tiktok.com/atanas.vip" target="_blank">
         <i class="fab fa-tiktok"></i> TikTok
       </a>
-      <a class="link" href="mailto:deinname@example.com">
+      <a class="link" href="mailto:leck-meine-eier@negger.de">
         <i class="fas fa-envelope"></i> E-Mail
       </a>
     </div>
 
-    <!-- WÄHLE EINE DER BEIDEN MUSIKOPTIONEN: -->
-    
-    <!-- OPTION 1: SoundCloud Player (unsichtbar) -->
-    <iframe id="soundcloudPlayer" 
-            src="https://w.soundcloud.com/player/?url=https%3A//soundcloud.com/reynes_xlvii/dnd&auto_play=false&hide_related=true&show_comments=false"
-            width="0" 
-            height="0" 
-            frameborder="no" 
-            scrolling="no">
-    </iframe>
-
-    <!-- OPTION 2: MP3 Player (falls du eine MP3-Datei hast) -->
-    <!--
+    <!-- Unsichtbarer Audio-Player -->
     <audio id="backgroundMusic" loop>
-      <source src="DEIN_MP3_LINK" type="audio/mpeg">
+      <!-- WÄHLE EINE OPTION: -->
+      <!-- 1. SoundCloud zu MP3 konvertiert: -->
+      <source src="https://soundcloud-audio.com/mp3/reynes_xlvii/dnd" type="audio/mpeg">
+      
+      <!-- 2. ODER eigene MP3-Datei: -->
+      <!-- <source src="https://www.dropbox.com/s/.../dein-song.mp3?dl=1" type="audio/mpeg"> -->
     </audio>
-    -->
 
-    <!-- Musik-Steuerung Button -->
+    <!-- Musik-Button (wird nach ENTER-Klick sichtbar) -->
     <div class="music-player" id="musicToggle">
-      <i class="fab fa-soundcloud"></i> <!-- Für SoundCloud -->
-      <!-- <i class="fas fa-music"></i> --> <!-- Für MP3 -->
+      <i class="fas fa-play"></i>
     </div>
   </div>
 
@@ -302,61 +293,47 @@
       setTimeout(() => {
         introScreen.style.display = 'none';
         mainContent.style.display = 'flex';
+        
+        // Musik-Button nach ENTER sichtbar machen
+        document.getElementById('musicToggle').style.display = 'flex';
       }, 1000);
     });
 
-    // 4. MUSIK-STEUERUNG (Wähle eine Option)
-
-    // OPTION 1: SoundCloud Integration
+    // 4. VERBESSERTE MUSIK-STEUERUNG (funktioniert auf Mobile)
+    const audio = document.getElementById('backgroundMusic');
     const musicToggle = document.getElementById('musicToggle');
     let musicPlaying = false;
+    audio.volume = 0.3; // 30% Lautstärke
 
-    // Lade SoundCloud API
-    const scScript = document.createElement('script');
-    scScript.src = 'https://w.soundcloud.com/player/api.js';
-    scScript.onload = function() {
-      const widget = SC.Widget(document.getElementById('soundcloudPlayer'));
-      
-      // Starte Musik nach ENTER-Klick
-      enterBtn.addEventListener('click', () => {
-        widget.play();
-        musicPlaying = true;
-        musicToggle.innerHTML = '<i class="fas fa-pause"></i>';
-      });
-
-      // Play/Pause bei Klick
-      musicToggle.addEventListener('click', () => {
-        widget.toggle();
-        musicPlaying = !musicPlaying;
-        musicToggle.innerHTML = musicPlaying 
-          ? '<i class="fas fa-pause"></i>' 
-          : '<i class="fab fa-soundcloud"></i>';
-      });
-    };
-    document.body.appendChild(scScript);
-
-    /*
-    // OPTION 2: MP3 Integration (wenn du die MP3-Option oben aktivierst)
-    const audio = document.getElementById('backgroundMusic');
-    audio.volume = 0.3;
-    
-    enterBtn.addEventListener('click', () => {
-      audio.play();
-      musicPlaying = true;
-      musicToggle.innerHTML = '<i class="fas fa-pause"></i>';
-    });
-
+    // Mobile: Erst nach Nutzerinteraktion Musik starten
     musicToggle.addEventListener('click', () => {
       if (musicPlaying) {
         audio.pause();
-        musicToggle.innerHTML = '<i class="fas fa-music"></i>';
+        musicToggle.innerHTML = '<i class="fas fa-play"></i>';
       } else {
-        audio.play();
+        audio.play().catch(error => {
+          // Fallback falls Autoplay blockiert
+          musicToggle.innerHTML = '<i class="fas fa-unlock"></i> Tippe zum Freischalten';
+          document.body.addEventListener('click', () => {
+            audio.play();
+            musicToggle.innerHTML = '<i class="fas fa-pause"></i>';
+          }, { once: true });
+        });
         musicToggle.innerHTML = '<i class="fas fa-pause"></i>';
       }
       musicPlaying = !musicPlaying;
     });
-    */
+
+    // Desktop: Musik nach ENTER automatisch starten
+    if (!/Mobi|Android/i.test(navigator.userAgent)) {
+      enterBtn.addEventListener('click', () => {
+        setTimeout(() => {
+          audio.play();
+          musicPlaying = true;
+          musicToggle.innerHTML = '<i class="fas fa-pause"></i>';
+        }, 1000);
+      });
+    }
   </script>
 </body>
 </html>
