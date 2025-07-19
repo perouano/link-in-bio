@@ -99,16 +99,24 @@
       z-index: 1;
     }
 
+    /* Profilbild links */
+    .profile-container {
+      display: flex;
+      align-items: flex-start;
+      width: 100%;
+      max-width: 400px;
+      margin-top: 2em;
+    }
+
     .profile-img {
-      width: 150px;
-      height: 150px;
+      width: 120px;
+      height: 120px;
       border-radius: 50%;
       object-fit: cover;
       border: 2px solid var(--text-color);
-      margin-top: 1em;
+      margin-right: 20px;
       animation: pulse 3s infinite;
       box-shadow: var(--neon-glow);
-      z-index: 1;
     }
 
     .content {
@@ -119,21 +127,19 @@
     }
 
     h1 {
-      margin: 1em 0 0.5em;
-      font-size: 2em;
+      margin: 0.5em 0;
+      font-size: 1.8em;
       text-align: center;
       text-shadow: var(--neon-glow);
-      z-index: 1;
     }
 
     .links {
       display: flex;
       flex-direction: column;
       gap: 1.2em;
-      margin-top: 2em;
+      margin-top: 1em;
       width: 100%;
       max-width: 400px;
-      z-index: 1;
     }
 
     .link {
@@ -146,7 +152,6 @@
       color: var(--text-color);
       text-decoration: none;
       font-size: 1.1em;
-      transform: translateX(0);
       transition: all 0.3s ease;
       box-shadow: var(--neon-glow);
       border: var(--neon-border);
@@ -161,31 +166,62 @@
     }
 
     .link:hover {
-      transform: scale(1.08);
+      transform: scale(1.05);
       box-shadow: 0 0 20px rgba(255, 255, 255, 0.9);
     }
 
-    .music-player {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      z-index: 100;
-      color: white;
-      background: #ff8800;
-      width: 50px;
-      height: 50px;
-      border-radius: 50%;
-      display: none; /* Erst nach ENTER-Klick anzeigen */
-      align-items: center;
+    /* Musik-Player */
+    .music-controls {
+      display: flex;
       justify-content: center;
-      cursor: pointer;
-      box-shadow: 0 0 10px #ff8800,
-                  0 0 20px #ff8800;
-      transition: transform 0.3s ease;
+      align-items: center;
+      gap: 15px;
+      margin-top: 20px;
+      width: 100%;
+      max-width: 400px;
+      background: var(--card-bg);
+      padding: 12px;
+      border-radius: 50px;
+      box-shadow: var(--neon-glow);
+      border: var(--neon-border);
     }
 
-    .music-player:hover {
+    .music-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-color);
+      font-size: 1.2em;
+      cursor: pointer;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s ease;
+    }
+
+    .music-btn:hover {
       transform: scale(1.1);
+      background: rgba(255,255,255,0.1);
+    }
+
+    .volume-slider {
+      width: 80px;
+      -webkit-appearance: none;
+      height: 5px;
+      background: rgba(255,255,255,0.3);
+      border-radius: 5px;
+      outline: none;
+    }
+
+    .volume-slider::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 15px;
+      height: 15px;
+      border-radius: 50%;
+      background: var(--text-color);
+      cursor: pointer;
     }
 
     @keyframes pulse {
@@ -227,38 +263,48 @@
   <!-- Main Content -->
   <div class="content" id="mainContent">
     <button class="toggle-mode" onclick="toggleMode()">🌙 / ☀️</button>
-    <img src="https://i.ibb.co/PzG8y783/kitty.jpg" alt="Profilbild" class="profile-img" />
-    <h1>👋 Hey, ich bin Atanas</h1>
+    
+    <div class="profile-container">
+      <img src="https://i.ibb.co/PzG8y783/kitty.jpg" alt="Profilbild" class="profile-img" />
+      <h1>👋 Hey, ich bin Atanas</h1>
+    </div>
 
     <div class="links">
-      <a class="link" href="https://www.instagram.com/atanas.vip/" target="_blank">
+      <a class="link" href="https://instagram.com/" target="_blank">
         <i class="fab fa-instagram"></i> Instagram
       </a>
-      <a class="link" href="https://www.youtube.com/@PIKO_Z" target="_blank">
+      <a class="link" href="https://youtube.com/" target="_blank">
         <i class="fab fa-youtube"></i> YouTube
       </a>
-      <a class="link" href="https://tiktok.com/atanas.vip" target="_blank">
+      <a class="link" href="https://tiktok.com/" target="_blank">
         <i class="fab fa-tiktok"></i> TikTok
       </a>
-      <a class="link" href="mailto:leck-meine-eier@negger.de">
+      <a class="link" href="mailto:deinname@example.com">
         <i class="fas fa-envelope"></i> E-Mail
       </a>
     </div>
 
-    <!-- Unsichtbarer Audio-Player -->
-    <audio id="backgroundMusic" loop>
-      <!-- WÄHLE EINE OPTION: -->
-      <!-- 1. SoundCloud zu MP3 konvertiert: -->
-      <source src="https://soundcloud-audio.com/mp3/reynes_xlvii/dnd" type="audio/mpeg">
-      
-      <!-- 2. ODER eigene MP3-Datei: -->
-      <!-- <source src="https://www.dropbox.com/s/.../dein-song.mp3?dl=1" type="audio/mpeg"> -->
-    </audio>
-
-    <!-- Musik-Button (wird nach ENTER-Klick sichtbar) -->
-    <div class="music-player" id="musicToggle">
-      <i class="fas fa-play"></i>
+    <!-- Musik-Player -->
+    <div class="music-controls">
+      <button class="music-btn" id="prevBtn">
+        <i class="fas fa-step-backward"></i>
+      </button>
+      <button class="music-btn" id="playBtn">
+        <i class="fas fa-play"></i>
+      </button>
+      <button class="music-btn" id="nextBtn">
+        <i class="fas fa-step-forward"></i>
+      </button>
+      <button class="music-btn" id="muteBtn">
+        <i class="fas fa-volume-up"></i>
+      </button>
+      <input type="range" min="0" max="1" step="0.01" value="0.7" class="volume-slider" id="volumeSlider">
     </div>
+
+    <!-- Audio Element -->
+    <audio id="backgroundMusic">
+      <source src="https://www.dropbox.com/scl/fi/gvdeaoe5a5i5x4c4aih09/CJx-Heartkiller-Lyrics-x-AMV-mp3cut.net.mp3?rlkey=ir9gw2ql2ijn51o2kc49zx1ew&dl=1" type="audio/mpeg">
+    </audio>
   </div>
 
   <script>
@@ -293,47 +339,66 @@
       setTimeout(() => {
         introScreen.style.display = 'none';
         mainContent.style.display = 'flex';
-        
-        // Musik-Button nach ENTER sichtbar machen
-        document.getElementById('musicToggle').style.display = 'flex';
       }, 1000);
     });
 
-    // 4. VERBESSERTE MUSIK-STEUERUNG (funktioniert auf Mobile)
+    // 4. Musik-Player Funktionen
     const audio = document.getElementById('backgroundMusic');
-    const musicToggle = document.getElementById('musicToggle');
-    let musicPlaying = false;
-    audio.volume = 0.3; // 30% Lautstärke
+    const playBtn = document.getElementById('playBtn');
+    const muteBtn = document.getElementById('muteBtn');
+    const volumeSlider = document.getElementById('volumeSlider');
+    let isPlaying = false;
+    let isMuted = false;
 
-    // Mobile: Erst nach Nutzerinteraktion Musik starten
-    musicToggle.addEventListener('click', () => {
-      if (musicPlaying) {
+    // Lautstärke initial einstellen
+    audio.volume = 0.7;
+
+    // Play/Pause
+    playBtn.addEventListener('click', () => {
+      if (isPlaying) {
         audio.pause();
-        musicToggle.innerHTML = '<i class="fas fa-play"></i>';
+        playBtn.innerHTML = '<i class="fas fa-play"></i>';
       } else {
-        audio.play().catch(error => {
-          // Fallback falls Autoplay blockiert
-          musicToggle.innerHTML = '<i class="fas fa-unlock"></i> Tippe zum Freischalten';
-          document.body.addEventListener('click', () => {
-            audio.play();
-            musicToggle.innerHTML = '<i class="fas fa-pause"></i>';
-          }, { once: true });
-        });
-        musicToggle.innerHTML = '<i class="fas fa-pause"></i>';
+        audio.play();
+        playBtn.innerHTML = '<i class="fas fa-pause"></i>';
       }
-      musicPlaying = !musicPlaying;
+      isPlaying = !isPlaying;
     });
 
-    // Desktop: Musik nach ENTER automatisch starten
-    if (!/Mobi|Android/i.test(navigator.userAgent)) {
-      enterBtn.addEventListener('click', () => {
-        setTimeout(() => {
-          audio.play();
-          musicPlaying = true;
-          musicToggle.innerHTML = '<i class="fas fa-pause"></i>';
-        }, 1000);
-      });
-    }
+    // Mute/Unmute
+    muteBtn.addEventListener('click', () => {
+      if (isMuted) {
+        audio.muted = false;
+        muteBtn.innerHTML = '<i class="fas fa-volume-up"></i>';
+        volumeSlider.value = audio.volume;
+      } else {
+        audio.muted = true;
+        muteBtn.innerHTML = '<i class="fas fa-volume-mute"></i>';
+        volumeSlider.value = 0;
+      }
+      isMuted = !isMuted;
+    });
+
+    // Lautstärkeregler
+    volumeSlider.addEventListener('input', () => {
+      audio.volume = volumeSlider.value;
+      if (audio.volume > 0) {
+        audio.muted = false;
+        isMuted = false;
+        muteBtn.innerHTML = '<i class="fas fa-volume-up"></i>';
+      }
+    });
+
+    // Automatisch Play wenn Musik zuende (Loop)
+    audio.addEventListener('ended', () => {
+      audio.currentTime = 0;
+      audio.play();
+    });
+
+    // Für Mobile: Erst nach Klick Musik laden
+    enterBtn.addEventListener('click', () => {
+      audio.load(); // Lädt die Musik vor
+    });
   </script>
 </body>
 </html>
