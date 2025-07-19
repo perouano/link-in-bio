@@ -74,33 +74,32 @@
     }
 
     .link {
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  background-color: var(--card-bg);
-  padding: 1em 1.2em;
-  border-radius: 12px;
-  color: var(--text-color);
-  text-decoration: none;
-  font-size: 1.1em;
-  overflow: hidden;
-  opacity: 0;
-  transform: translateX(100%);
-  animation: slideIn 0.6s forwards;
-  animation-timing-function: ease-out;
-  transition: transform 0.3s ease;
-}
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      background-color: var(--card-bg);
+      padding: 1em 1.2em;
+      border-radius: 12px;
+      color: var(--text-color);
+      text-decoration: none;
+      font-size: 1.1em;
+      overflow: hidden;
+      opacity: 0;
+      transform: translateX(100%);
+      animation: slideIn 0.6s forwards;
+      animation-timing-function: ease-out;
+      transition: transform 0.3s ease;
+    }
 
     .link i {
       margin-right: 0.8em;
       font-size: 1.3em;
       min-width: 24px;
+    }
 
-      
-   .link:hover {
-  transform: scale(1.08) rotate(1deg);
-}
-
+    .link:hover {
+      transform: scale(1.08) rotate(1deg);
+    }
 
     .link:nth-child(1) { animation-delay: 0.2s; }
     .link:nth-child(2) { animation-delay: 0.4s; }
@@ -115,11 +114,6 @@
       }
     }
 
-    @keyframes shake {
-      0%, 100% { transform: scale(1.05) rotate(1deg); }
-      50% { transform: scale(1.08) rotate(-1.5deg); }
-    }
-
     @keyframes pulse {
       0%, 100% { transform: scale(1); }
       50% { transform: scale(1.05); }
@@ -131,7 +125,7 @@
   <!-- Dark/Light Switch -->
   <button class="toggle-mode" onclick="toggleMode()">🌙 / ☀️</button>
 
-  <!-- Profilbild -->
+  <!-- Profilbild (füge diese Bilddatei mit gleichem Namen ins Repo ein) -->
   <img src="White eyes Icon.jpg" alt="Profilbild" class="profile-img" />
 
   <h1>👋 Hey, ich bin Dein Name</h1>
