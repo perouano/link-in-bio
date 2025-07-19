@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Meine Links</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, #6366f1, #8b5cf6);
+      color: white;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      min-height: 100vh;
+      padding: 2em;
+      animation: fadeIn 1s ease-out forwards;
+    }
+    h1 {
+      margin: 1em 0 0.5em;
+      font-size: 2.5em;
+      animation: slideDown 1s ease-out;
+    }
+    .links {
+      margin-top: 2em;
+      width: 100%;
+      max-width: 400px;
+      display: flex;
+      flex-direction: column;
+      gap: 1.2em;
+    }
+    a {
+      text-decoration: none;
+      color: white;
+      background: rgba(255, 255, 255, 0.1);
+      padding: 1em 1.5em;
+      border-radius: 15px;
+      text-align: center;
+      font-size: 1.1em;
+      transition: transform 0.2s, background 0.3s ease;
+      backdrop-filter: blur(5px);
+      animation: fadeInUp 0.8s ease forwards;
+    }
+    a:hover {
+      background: rgba(255, 255, 255, 0.2);
+      transform: scale(1.05);
+    }
+
+    /* Animations */
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    @keyframes slideDown {
+      from { transform: translateY(-30px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+    @keyframes fadeInUp {
+      from { transform: translateY(30px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+  </style>
+</head>
+<body>
+  <h1>👋 Hallo, ich bin [Dein Name]</h1>
+  <div class="links">
+    <a href="https://instagram.com/" target="_blank">📸 Instagram</a>
+    <a href="https://tiktok.com/" target="_blank">🎵 TikTok</a>
+    <a href="https://youtube.com/" target="_blank">▶️ YouTube</a>
+    <a href="https://github.com/" target="_blank">💻 GitHub</a>
+    <a href="mailto:deinname@example.com">📧 E-Mail</a>
+  </div>
+</body>
+</html>
