@@ -83,7 +83,7 @@
       box-shadow: 0 0 20px rgba(255, 255, 255, 0.9);
     }
 
-    /* Rest des CSS bleibt gleich */
+    /* Main Content */
     .toggle-mode {
       position: absolute;
       top: 1em;
@@ -170,7 +170,7 @@
       bottom: 20px;
       right: 20px;
       z-index: 100;
-      color: var(--text-color);
+      color: white;
       background: #ff8800;
       width: 50px;
       height: 50px;
@@ -224,14 +224,10 @@
     <button class="enter-btn" id="enterBtn">ENTER</button>
   </div>
 
-  <!-- Main Content (hidden initially) -->
+  <!-- Main Content -->
   <div class="content" id="mainContent">
-    <!-- Dark/Light Switch -->
     <button class="toggle-mode" onclick="toggleMode()">🌙 / ☀️</button>
-
-    <!-- Profilbild -->
     <img src="https://i.ibb.co/PzG8y783/kitty.jpg" alt="Profilbild" class="profile-img" />
-
     <h1>👋 Hey, ich bin Atanas</h1>
 
     <div class="links">
@@ -249,103 +245,108 @@
       </a>
     </div>
 
-    <!-- SoundCloud Player -->
-    <iframe id="soundcloudPlayer" 
-            src="https://w.soundcloud.com/player/?url=https://soundcloud.com/reynes_xlvii/dnd&auto_play=true&hide_related=true&show_comments=false&show_user=false&show_reposts=false&visual=false"
-            width="0" 
-            height="0" 
-            frameborder="no" 
-            scrolling="no">
-    </iframe>
-
-    <!-- Musik-Steuerung Button -->
+    <!-- Musik Player -->
     <div class="music-player" id="musicToggle">
       <i class="fab fa-soundcloud"></i>
     </div>
   </div>
 
+  <!-- Audio Element (Fallback) -->
+  <audio id="backgroundMusic" loop>
+    <source src="https://www.dropbox.com/scl/fi/ookftvxq382so2jy7nll4/Sewerslvt-Pretty-Cvnt-mp3cut.net.mp3?rlkey=mrnqn5hlmg69b3gib12y1qu5p&st=6uaz9lwo&dl=0" type="audio/mpeg">
+  </audio>
+
   <script>
-    // Dark/Light Mode Toggle
+    // 1. Dark/Light Mode
     function toggleMode() {
       document.body.classList.toggle("light");
     }
 
-    // Username Animation
-    const username = document.getElementById('username');
-    const letters = username.querySelectorAll('span');
+    // 2. Username Animation
+    const letters = document.querySelectorAll('.username span');
     const enterBtn = document.getElementById('enterBtn');
     const introScreen = document.getElementById('introScreen');
     const mainContent = document.getElementById('mainContent');
 
-    // Animiere Buchstaben nacheinander
-    function animateLetters() {
-      letters.forEach((letter, index) => {
-        setTimeout(() => {
-          letter.style.animation = `letterAppear 0.5s forwards`;
-          
-          // Lasse Buchstaben nach 3 Sekunden wieder verschwinden
-          setTimeout(() => {
-            letter.style.animation = `letterDisappear 0.5s forwards ${index * 0.1}s`;
-          }, 3000 + index * 100);
-        }, index * 150);
-      });
-
-      // Zeige ENTER Button nach der Animation
+    letters.forEach((letter, index) => {
+      // Buchstaben erscheinen lassen
       setTimeout(() => {
-        enterBtn.style.opacity = '1';
-        enterBtn.style.transition = 'opacity 1s ease';
-      }, 4000);
-    }
+        letter.style.animation = `letterAppear 0.5s forwards`;
+        
+        // Buchstaben verschwinden lassen
+        setTimeout(() => {
+          letter.style.animation = `letterDisappear 0.5s forwards`;
+        }, 3000 + index * 100);
+      }, index * 150);
+    });
 
-    // Starte Animation beim Laden
-    animateLetters();
+    // ENTER Button anzeigen
+    setTimeout(() => {
+      enterBtn.style.opacity = '1';
+    }, 4000);
 
-    // ENTER Button Funktion
+    // 3. Enter Button Funktion
     enterBtn.addEventListener('click', () => {
       introScreen.style.opacity = '0';
-      introScreen.style.transition = 'opacity 1s ease';
-      
       setTimeout(() => {
         introScreen.style.display = 'none';
         mainContent.style.display = 'flex';
+        startMusic(); // Musik starten
       }, 1000);
     });
 
-    // SoundCloud Integration
+    // 4. Musik Funktionen
     const musicToggle = document.getElementById('musicToggle');
     let musicPlaying = false;
+    const audio = document.getElementById('backgroundMusic');
 
-    // Lade SoundCloud Widget API
-    (function() {
-      const scScript = document.createElement('script');
-      scScript.src = 'https://w.soundcloud.com/player/api.js';
-      scScript.async = true;
-      document.body.appendChild(scScript);
-    })();
+    function startMusic() {
+      audio.volume = 0.3;
+      audio.play()
+        .then(() => {
+          musicPlaying = true;
+          musicToggle.innerHTML = '<i class="fas fa-pause"></i>';
+        })
+        .catch(error => {
+          console.log("Musik konnte nicht automatisch starten:", error);
+        });
+    }
 
-    // Initialisiere Player
-    function initPlayer() {
-      const widget = SC.Widget(document.getElementById('soundcloudPlayer'));
-      
-      widget.bind(SC.Widget.Events.READY, function() {
-        widget.play();
-        musicPlaying = true;
+    musicToggle.addEventListener('click', () => {
+      if (musicPlaying) {
+        audio.pause();
+        musicToggle.innerHTML = '<i class="fab fa-soundcloud"></i>';
+      } else {
+        audio.play();
         musicToggle.innerHTML = '<i class="fas fa-pause"></i>';
-      });
+      }
+      musicPlaying = !musicPlaying;
+    });
 
-      musicToggle.addEventListener('click', function() {
-        widget.toggle();
-        musicPlaying = !musicPlaying;
-        musicToggle.innerHTML = musicPlaying ? '<i class="fas fa-pause"></i>' : '<i class="fab fa-soundcloud"></i>';
-      });
+    // 5. SoundCloud Fallback
+    function loadSoundCloud() {
+      const iframe = document.createElement('iframe');
+      iframe.id = 'soundcloudPlayer';
+      iframe.src = 'https://w.soundcloud.com/player/?url=https%3A%2F%2Fsoundcloud.com%2Freynes_xlvii%2Fdnd&auto_play=true&hide_related=true';
+      iframe.width = '0';
+      iframe.height = '0';
+      iframe.frameborder = 'no';
+      iframe.scrolling = 'no';
+      document.body.appendChild(iframe);
+
+      const script = document.createElement('script');
+      script.src = 'https://w.soundcloud.com/player/api.js';
+      script.onload = () => {
+        const widget = SC.Widget(iframe);
+        widget.bind(SC.Widget.Events.READY, () => {
+          widget.setVolume(50);
+        });
+      };
+      document.body.appendChild(script);
     }
 
-    // Warte auf SoundCloud API
-    if (window.SC) {
-      initPlayer();
-    } else {
-      window.onSC = initPlayer;
-    }
+    // Starte SoundCloud nach 3 Sekunden
+    setTimeout(loadSoundCloud, 3000);
   </script>
 </body>
 </html>
